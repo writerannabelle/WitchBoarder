@@ -34,6 +34,8 @@ window.__ASSETS = {"witch-boarder-title.png": "data:image/png;base64,iVBORw0KGgo
 
 // asset resolver: returns an embedded data: URI when bundled, else the plain path
 function A(p){ return (window.__ASSETS && window.__ASSETS[p]) || p; }
+// are we running inside an iframe? (embedded players must click before the keyboard works)
+let EMBEDDED = false; try { EMBEDDED = (window.self !== window.top); } catch(e){ EMBEDDED = true; }
 /* ============================================================
    WITCH-BOARDER  —  Wet Leaf Press
    "We like making shit up"
@@ -1792,9 +1794,9 @@ function renderTitle(){
   }
   // subtitle
   drawTextCenteredOutlined("SHE'S EVIL BUT ALSO LOVES SKATEBOARDING", W/2, 196, 1, '#ffe24a', '#200');
-  // blinking prompt
+  // blinking prompt — embedded players must click first to hand the keyboard to the game
   if(Math.floor(blink*2)%2===0){
-    drawTextCenteredOutlined('PRESS SPACE TO SHRED', W/2, 208, 1, '#fff', '#200');
+    drawTextCenteredOutlined(EMBEDDED ? 'CLICK TO PLAY' : 'PRESS SPACE TO SHRED', W/2, 208, 1, '#fff', '#200');
   }
 }
 function drawTitleLogo(cx,y){
